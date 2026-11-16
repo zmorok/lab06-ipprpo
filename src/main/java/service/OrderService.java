@@ -63,7 +63,7 @@ public class OrderService {
             logger.warn("Сумма заказа ({}) меньше, чем минимально допустимая ({}).", orderPrice, minOrderPrice);
             throw new IllegalArgumentException(
                     String.format(
-                            "Сумма заказа ({0}) меньше допустимой минимальной суммы ({1})",
+                            "Сумма заказа (%.2f) меньше допустимой минимальной суммы (%.2f)",
                             orderPrice,
                             minOrderPrice)
                     );
@@ -74,7 +74,7 @@ public class OrderService {
             logger.warn("Недостаточно средств у клиента {}. Баланс: {}, сумма заказа: {}", customer.id, customer.cash, orderPrice);
             throw new IllegalArgumentException(
                     String.format(
-                            "Не хватает средств ({0}) для оплаты заказа на сумму {1}",
+                            "Не хватает средств (%.2f) для оплаты заказа на сумму %.2f",
                             customer.cash,
                             orderPrice)
             );
