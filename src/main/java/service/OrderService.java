@@ -23,6 +23,8 @@ public class OrderService {
     private final Counter totalOperationsCounter;
     private final Counter successOperationsCounter;
     private final Counter errorOperationsCounter;
+    private final Counter dishesOrderedCounter;
+    private final Counter revenueCounter;
 
     public OrderService(IRepository<Order> repository, double minOrderPrice) {
         this(repository, minOrderPrice, new SimpleMeterRegistry());
@@ -42,6 +44,14 @@ public class OrderService {
 
         this.errorOperationsCounter = Counter.builder("application_operations_error_total")
                 .description("Количество ошибок при оформлении заказов")
+                .register(meterRegistry);
+
+        this.dishesOrderedCounter = Counter.builder("food_delivery_dishes_ordered_total")
+                .description("Общее количество заказанных блюд в системе доставки еды")
+                .register(meterRegistry);
+
+        this.revenueCounter = Counter.builder("food_delivery_revenue_total")
+                .description("Общая выручка от успешно оформленных заказов доставки еды")
                 .register(meterRegistry);
     }
 
@@ -93,6 +103,8 @@ public class OrderService {
         }
 
         successOperationsCounter.increment();
+        dishesOrderedCounter.increment(dishes.size());
+        revenueCounter.increment(orderPrice);
         logger.info("Заказ №{} успешно оформлен. Клиент: {}, сумма: {}", order.id, customer.id, order.price);
 
         return order;
