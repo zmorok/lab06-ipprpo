@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         PrometheusMeterRegistry prometheusRegistry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
         server.createContext("/metrics", exchange -> {
             String prometheusScrape = prometheusRegistry.scrape();
             byte[] content = prometheusScrape.getBytes(StandardCharsets.UTF_8);
@@ -29,7 +29,7 @@ public class Main {
         server.start();
 
         System.out.println("HTTP-сервер запущен.");
-        System.out.println("Метрики: http://localhost:8080/metrics");
+        System.out.println("Метрики: http://localhost:8081/metrics");
         System.out.println();
 
         OrderRepository repository = new OrderRepository();
